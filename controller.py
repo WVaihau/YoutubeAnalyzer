@@ -345,8 +345,8 @@ def get_img(path): # Return an image
     return image 
 
 @st.cache
-def apply_tuner_year(df, years): # Apply a tuner parameter
-    d = df.query('year in ({})'.format(years))
+def apply_tuner_year(df, year): # Apply a tuner parameter
+    d = df[df["year"]==int(year)]
     return d
 
 def load_preset(file:str):

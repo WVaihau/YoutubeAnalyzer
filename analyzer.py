@@ -192,7 +192,7 @@ with content:
         ## Graph
         if view_dropdown == 'Video Explorer': ### Video Explorer
             st.subheader('My youtube history')
-            sub_file = ctrl.apply_tuner_year(file, [opt_y])
+            sub_file = ctrl.apply_tuner_year(file, opt_y)
             
             if opt_type != 'Random':
                 vid_link = ctrl.get_insight(sub_file)[opt_type.lower()]
@@ -241,46 +241,47 @@ with content:
 
         ## Graph
         
-        ### Race chart
-        if confidence_level == "100%":
-            race_chart = ctrl.race_chart(df, race_item, race_time.lower())
-            st.write(race_chart)
+        if view_dropdown == 'Exploratory Data Analysis':
+            ### Race chart
+            if confidence_level == "100%":
+                race_chart = ctrl.race_chart(df, race_item, race_time.lower())
+                st.write(race_chart)
+                
+            ### Bar chart
+            cc1, cc2 = st.columns(2)
             
-        ### Bar chart
-        cc1, cc2 = st.columns(2)
-        
-        with cc1:
-            fig_type, info_type = ctrl.bar(df, 'Type', direction='h')
-            st.plotly_chart(fig_type, use_container_width=True)
-            st.markdown("""
-                        The majority of the videos watched were in the **{}** category with over **{} videos watched**
-                        """.format(info_type['Type'], info_type['count']))
-        with cc2:
-            fig_ytb, info_ytb = ctrl.bar(df, 'Youtuber')
-            st.plotly_chart(fig_ytb, use_container_width=True)
-            st.markdown("""
-                        Here is the list of Youtubers that you have watched the most videos. At the first place we find **{}** with more than **{} videos watched**
-                        """.format(info_ytb['Youtuber'], info_ytb['count']))
-        
-        ### Ridgeline 
-        st.plotly_chart(ctrl.ridgeline(df, ridge_topic, ridge_col[0].lower()+ridge_col[1:]),use_container_width=True)
-        
-        
-        if mode == 'My own dataset':
-            ## Analysis about the top
-            info = ctrl.vids_info(df, info_ytb, 'Youtuber')
-            if selectbox_genre == "Type":
-                info = ctrl.vids_info(df, info_type, 'Type')
-            ctrl.details(df, info, selectbox_genre)
+            with cc1:
+                fig_type, info_type = ctrl.bar(df, 'Type', direction='h')
+                st.plotly_chart(fig_type, use_container_width=True)
+                st.markdown("""
+                            The majority of the videos watched were in the **{}** category with over **{} videos watched**
+                            """.format(info_type['Type'], info_type['count']))
+            with cc2:
+                fig_ytb, info_ytb = ctrl.bar(df, 'Youtuber')
+                st.plotly_chart(fig_ytb, use_container_width=True)
+                st.markdown("""
+                            Here is the list of Youtubers that you have watched the most videos. At the first place we find **{}** with more than **{} videos watched**
+                            """.format(info_ytb['Youtuber'], info_ytb['count']))
             
-            ### Instanciate download section
-            with download:
-                st.sidebar.subheader(model.sidebar_section_logo["dl"] + \
-                                     ' Download')
-                st.sidebar.markdown('Explore your data with your own method by downloading the file we used to generated the different analysis.')
-                st.sidebar.download_button(
-                        label = "Download my data",
-                        data  = csv,
-                        file_name = 'watched_history_by_wv.csv',
-                        mime = 'text/csv'
-                    )
+            ### Ridgeline 
+            st.plotly_chart(ctrl.ridgeline(df, ridge_topic, ridge_col[0].lower()+ridge_col[1:]),use_container_width=True)
+            
+            
+            if mode == 'My own dataset':
+                ## Analysis about the top
+                info = ctrl.vids_info(df, info_ytb, 'Youtuber')
+                if selectbox_genre == "Type":
+                    info = ctrl.vids_info(df, info_type, 'Type')
+                ctrl.details(df, info, selectbox_genre)
+                
+                ### Instanciate download section
+                with download:
+                    st.sidebar.subheader(model.sidebar_section_logo["dl"] + \
+                                         ' Download')
+                    st.sidebar.markdown('Explore your data with your own method by downloading the file we used to generated the different analysis.')
+                    st.sidebar.download_button(
+                            label = "Download my data",
+                            data  = csv,
+                            file_name = 'watched_history_by_wv.csv',
+                            mime = 'text/csv'
+                        )
