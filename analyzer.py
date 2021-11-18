@@ -189,11 +189,11 @@ with content:
         
         st.write('')
         
-        ## Graph
+        ## Graph & Video Explorer
         if view_dropdown == 'Video Explorer': ### Video Explorer
             st.subheader('My youtube history')
             sub_file = ctrl.apply_tuner_year(file, opt_y)
-            
+
             if opt_type != 'Random':
                 vid_link = ctrl.get_insight(sub_file)[opt_type.lower()]
             else:
@@ -202,7 +202,13 @@ with content:
             if btn_random != False:
                 vid_link = ctrl.random_vid(sub_file)
             
-            st.video(vid_link)
+            if type(vid_link) == float:
+                st.warning("The {} {} video url is not in your Youtube history".format(
+                    opt_y,
+                    opt_type.lower()
+                    ))
+            else:
+                st.video(str(vid_link))
         elif view_dropdown == 'Exploratory Data Analysis':
             st.subheader('General analysis')
             

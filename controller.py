@@ -496,8 +496,8 @@ def get_insight(df):
     "to" : max(df['year'])
     }
     df_info['nbr_watched'] = df.shape[0]
-    df_info['first'] = df.iloc[-1, 1]
-    df_info['last'] = df.iloc[0, 1]
+    df_info['first'] = df.iloc[-1, df.columns.tolist().index("titleUrl")]
+    df_info['last'] = df.iloc[0, df.columns.tolist().index("titleUrl")]
     return df_info
 
 def random_vid(df):
@@ -515,7 +515,7 @@ def random_vid(df):
         URL of the random video
 
     """
-    return df.iloc[rd(0,len(df)-1), 1]
+    return df.iloc[rd(0,len(df)-1), df.columns.tolist().index("titleUrl")]
 
 def vids_info(df, maxi, col):
     """
